@@ -1,0 +1,93 @@
+<dom-module id="webicor-app">
+	<style>	
+		* { font-family: "Roboto"; font-weight: 200;  }				
+		
+		.contents > * { margin: 1rem; }
+		
+		paper-material { margin-right: 1rem; }
+		paper-material > div { padding: 1rem; }
+
+		.step span {
+			display: inline-block;
+			border: solid 1px #ccc;
+			border-radius: 50%;
+			width: 2rem; height: 2rem;
+			text-align: center;
+			padding-top: 3px;
+		}
+	</style>
+	<template>
+		<header>
+			<h1>Webicor</h1>
+		</header>
+		<div class="contents">
+			<form is="iron-form"
+				id="form"
+				method="post"
+				action="[[timeurl]]"
+				class="horizontal layout wrap"
+				on-iron-form-response="response">
+				<input type="hidden" name="csrfmiddlewaretoken" id="csrf" />
+				<paper-material elevation="0">
+					<div>
+						<header class="step">					
+							<h2><span>1</span> Credentials</h2>
+						</header>
+						<paper-input name="username" type="text" label="username" value="amartin"></paper-input>
+						<paper-input name="password" type="password" label="password"></paper-input>
+					</div>
+				</paper-material>		
+				<paper-material elevation="0">
+					<div>
+						<header class="step">					
+							<h2><span>2</span> Parameters</h2>
+						</header>						
+						<paper-input name="foruser" type="text" label="For user" value="amartin"></paper-input>
+						<paper-input name="fromdate" type="date" label="From" value="01/01/2016"></paper-input>
+						<paper-input name="todate" type="date" label="To" value="01/31/2016"></paper-input>
+					</div>
+				</paper-material>
+				<paper-material elevation="0">
+					<div>
+						<header class="step">					
+							<h2><span>3</span> Action</h2>
+						</header>
+						<paper-button raised on-tap="get_entered_time">Entered Time</paper-button>
+					</div>
+				</paper-material>
+			</form>
+			<div>
+				<header class="step">
+					<h2><span>4</span> Results</h2>
+				</header>
+				<paper-button id="btndownload" raised on-tap="download_as_json" disabled>Download</paper-button>
+				<time-table entries="[[entries]]"></time-table>
+			</div>
+		</div>
+	</template>
+</dom-module>
+<script>
+	Polymer({
+		is: 'webicor-app',
+		properties: {
+			'timeurl': String
+		},
+		get_entered_time: function (e) {
+			this.$.csrf.value = csrf;
+			this.$.form.submit();
+		},
+		response: function (e, req) {
+			this.entries = req.response.entries;
+			this.$.btndownload.disabled = false;
+		},
+		download_as_json: function (e) {
+			//var content = 'data:application/octet-stream,' + encodeURIComponent(JSON.stringify(this.entries));	
+			var content = JSON.stringify(this.entries);	
+			var a = document.createElement('a');
+			var blob = new Blob([content], {'type':'application/octet-stream'});
+			a.href = window.URL.createObjectURL(blob);
+			a.download = 'time.json';
+			a.click();
+		}
+	});
+</script>

@@ -1,0 +1,27 @@
+{
+  "name": "main",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Andrew Martin <andrew.martin@infotechfl.com>"
+  ],
+  "license": "BSD-2-Clause",
+  "moduleType": [
+    "es6",
+    "node"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.2.0",
+    "paper-elements": "PolymerElements/paper-elements#^1.0.7",
+    "iron-ajax": "PolymerElements/iron-ajax#^1.1.1",
+    "iron-form": "PolymerElements/iron-form#^1.0.14"
+  }
+}

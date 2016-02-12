@@ -1,0 +1,16 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Webicor</title>
+	<script src="{% static 'main/bower_components/webcomponentsjs/webcomponents.min.js' %}"></script>
+	<link rel="import" href="{% static 'main/elements/elements.html' %}" />		
+</head>
+<body unresolved class="fullbleed">
+	<webicor-app timeurl="{% url 'epicor:entries' %}"></webicor-app>	
+	<script>
+		var csrf = '{{ csrf_token }}';
+	</script>
+</body>
+</html>

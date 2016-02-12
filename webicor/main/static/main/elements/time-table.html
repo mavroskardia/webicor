@@ -1,0 +1,29 @@
+<dom-module id="time-table">
+	<style>
+	</style>
+	<template>
+		<table>
+			<thead>
+				<tr>
+					<th>Activity</th>
+					<th>Hours</th>
+					<th>Comment</th>
+				</tr>
+			</thead>
+			<tbody>
+				<template is="dom-repeat" items="[[entries]]">
+					<tr>
+						<td>{{item.ProjectCode}}</td>
+						<td>{{item.Hours}}</td>
+						<td>{{item.WorkComment}}</td>
+					</tr>
+				</template>				
+			</tbody>
+		</table>		
+	</template>
+</dom-module>
+<script>
+	Polymer({
+		is: 'time-table'
+	});
+</script>
