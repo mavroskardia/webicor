@@ -9,7 +9,7 @@ def test(req):
 
 def entries(req):
 	if req.method != 'POST':
-		return HttpResonse('NO')
+		return HttpResponse('NO {} allowed'.format(req.method))
 
 	username = req.POST['username']
 	password = req.POST['password']

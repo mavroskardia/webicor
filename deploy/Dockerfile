@@ -1,5 +1,6 @@
 FROM webicorbase
 
+ADD resolv.conf /etc/resolv.conf
 ADD webicor.gz /srv/webicor
 ADD nginx.conf /etc/nginx/nginx.conf
 ADD requirements.txt /srv/requirements.txt

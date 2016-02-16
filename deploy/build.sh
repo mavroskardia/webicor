@@ -1,6 +1,9 @@
 rm -f webicor.gz
 pushd .
 cd ..
+find -type d -iname node_modules -exec rm -rf {} \;
+find -type d -iname bower_components -exec rm -rf {} \;
+rm -rf webicor/static/
 tar cfz deploy/webicor.gz webicor/
 popd
 
