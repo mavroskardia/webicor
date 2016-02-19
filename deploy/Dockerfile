@@ -11,6 +11,8 @@ WORKDIR /srv
 
 RUN /usr/bin/pip2 install -r requirements.txt
 
+RUN cd /srv/webicor/webicor/main/static/main/ && bower install --allow-root
+
 WORKDIR /srv/webicor/webicor
 
 RUN /usr/bin/python2 manage.py collectstatic --noinput
