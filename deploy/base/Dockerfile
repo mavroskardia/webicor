@@ -1,6 +1,7 @@
 FROM dock0/arch
 
-RUN pacman -Syuq --noconfirm && \
-	pacman -Sq nginx python2-pip npm --noconfirm && \
-	rm -f /etc/nginx/nginx.conf && \
-	npm install -g bower
+RUN pacman -S --needed archlinux-keyring --noconfirm && \
+	pacman -Syuq --noconfirm && \
+	pacman -Sq nginx npm python2-pip --noconfirm && \
+	npm install -g bower && \
+	rm -f /etc/nginx/nginx.conf

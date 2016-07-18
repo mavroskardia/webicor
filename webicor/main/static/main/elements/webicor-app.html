@@ -1,9 +1,9 @@
 <dom-module id="webicor-app">
-	<style>	
-		* { font-family: "Roboto"; font-weight: 200;  }				
-		
+	<style>
+		* { font-family: "Roboto"; font-weight: 200;  }
+
 		.contents > * { margin: 1rem; }
-		
+
 		paper-material { margin-right: 1rem; }
 		paper-material > div { padding: 1rem; }
 
@@ -15,6 +15,9 @@
 			text-align: center;
 			padding-top: 3px;
 		}
+
+		#filter { max-width: 30rem; }
+
 	</style>
 	<template>
 		<header>
@@ -30,18 +33,18 @@
 				<input type="hidden" name="csrfmiddlewaretoken" id="csrf" />
 				<paper-material elevation="0">
 					<div>
-						<header class="step">					
+						<header class="step">
 							<h2><span>1</span> Credentials</h2>
 						</header>
 						<paper-input name="username" type="text" label="username" value="amartin"></paper-input>
 						<paper-input name="password" type="password" label="password"></paper-input>
 					</div>
-				</paper-material>		
+				</paper-material>
 				<paper-material elevation="0">
 					<div>
-						<header class="step">					
+						<header class="step">
 							<h2><span>2</span> Parameters</h2>
-						</header>						
+						</header>
 						<paper-input name="foruser" type="text" label="For user" value="amartin"></paper-input>
 						<paper-input name="fromdate" type="date" label="From" value="01/01/2016"></paper-input>
 						<paper-input name="todate" type="date" label="To" value="01/31/2016"></paper-input>
@@ -49,7 +52,7 @@
 				</paper-material>
 				<paper-material elevation="0">
 					<div>
-						<header class="step">					
+						<header class="step">
 							<h2><span>3</span> Action</h2>
 						</header>
 						<paper-button raised on-tap="get_entered_time">Entered Time</paper-button>
@@ -61,7 +64,10 @@
 					<h2><span>4</span> Results</h2>
 				</header>
 				<paper-button id="btndownload" raised on-tap="download_as_json" disabled>Download</paper-button>
-				<time-table entries="[[entries]]"></time-table>
+				<paper-input id="filter" name="filter" type="text" label="Filter Results" on-change="filter_entries">
+					<paper-icon-button suffix icon="clear" on-tap="clear_filter"></paper-icon-button>
+				</paper-input>
+				<time-table entries="[[filtered_entries]]"></time-table>
 			</div>
 		</div>
 	</template>
@@ -78,16 +84,32 @@
 		},
 		response: function (e, req) {
 			this.entries = req.response.entries;
+			this.filter_entries();
 			this.$.btndownload.disabled = false;
 		},
 		download_as_json: function (e) {
-			//var content = 'data:application/octet-stream,' + encodeURIComponent(JSON.stringify(this.entries));	
-			var content = JSON.stringify(this.entries);	
+			//var content = 'data:application/octet-stream,' + encodeURIComponent(JSON.stringify(this.entries));
+			var content = JSON.stringify(this.filtered_entries);
 			var a = document.createElement('a');
 			var blob = new Blob([content], {'type':'application/octet-stream'});
 			a.href = window.URL.createObjectURL(blob);
 			a.download = 'time.json';
 			a.click();
+		},
+		filter_entries: function (e) {
+			if (!this.entries) return;
+
+			var s = this.$.filter.value || '';
+			s = s.toLowerCase();
+
+			this.filtered_entries = this.entries.filter(
+				e => (e.ProjectCode && e.ProjectCode.toLowerCase().indexOf(s) !== -1) ||
+					 (e.TaskName && e.TaskName.toLowerCase().indexOf(s) !== -1));
+		},
+		clear_filter: function (e) {
+			this.$.filter.value = '';
+			this.$.filter.focus();
+			this.$.filter.dispatchEvent(new Event('change', {bubbles:true}));
 		}
 	});
 </script>

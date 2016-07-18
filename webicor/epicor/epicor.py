@@ -46,7 +46,6 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument('-u', '--username')
 	parser.add_argument('-p', '--password')
-
 	args = parser.parse_args()
 
 	username = args.username or input('username: ')
@@ -58,7 +57,7 @@ if __name__ == '__main__':
 	fom = datetime.datetime(now.year, now.month, 1)
 	lom = datetime.datetime(now.year, now.month + 1, 1) - datetime.timedelta(1)
 	fow = datetime.datetime(now.year, now.month, now.day - now.weekday())
-	low = fow + datetime.timedelta(7)
+	low = fow + datetime.timedelta(7)	
 
 	if not hasattr(args, 'command'):
 		setattr(args, 'command', 'debug')
